@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Challenge Hub</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="landing.css">
+</head>
+<body class="landing-body">
+    <div id="floating-text-container"></div>
+    
+    <div class="landing-container">
+        <h1 class="landing-title">Unlock Your Coding Potential</h1>
+        <p class="landing-subtitle">Dive into data structures and algorithms with tailored challenges.</p>
+        <a href="index.html" class="challenge-button">Challenge Yourself</a>
+    </div>
+
+    <script>
+        // FOCUSED LIST (Repeated 8 times for high density)
+        const coreTopics = [
+            "Arrays", "Strings", "Linked Lists", "Hash Maps", "Trees", "Graphs", 
+            "Python", "Java", "C++", "C", "Hash Tables", "Recursion", "Queues", 
+            "Stacks", "Deques"
+        ];
+        
+        // Create a large list for full screen coverage
+        const topics = [];
+        for (let i = 0; i < 8; i++) {
+            topics.push(...coreTopics);
+        }
+
+        const container = document.getElementById('floating-text-container');
+        
+        // Configuration for "Train Tracks"
+        const lineHeightVh = 5; 
+        const numberOfTracks = Math.floor(100 / lineHeightVh); 
+        
+        // Slower movement duration and higher stagger to prevent horizontal overlap
+        const baseDuration = 35; 
+        const staggerTime = 2.5; // Increased stagger time for visible separation
+
+        topics.forEach((topic, index) => {
+            const span = document.createElement('span');
+            span.textContent = topic;
+            span.classList.add('floating-text');
+            
+            // 1. Calculate which vertical track this element belongs to
+            const trackIndex = index % numberOfTracks;
+            
+            // 2. Calculate the precise vertical position 
+            span.style.top = `${(trackIndex * lineHeightVh) + (lineHeightVh / 2)}vh`; // Center element vertically in its track
+            
+            // 3. Set the constant duration for the scroll animation
+            span.style.animationDuration = `${baseDuration}s`; 
+            
+            // 4. Calculate negative delay to create the "train" effect (starts them off-screen left)
+            span.style.animationDelay = `-${index * staggerTime}s`;
+            
+            container.appendChild(span);
+        });
+    </script>
+</body>
+</html>

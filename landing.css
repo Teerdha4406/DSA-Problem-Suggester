@@ -1,0 +1,168 @@
+/* Custom CSS for Landing Page */
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden; 
+    color: #1f2937; 
+}
+
+/* --- Floating Text Styles --- */
+#floating-text-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-text {
+    position: absolute;
+    /* Faint dark color for the light background */
+    color: rgba(55, 65, 81, 0.1); 
+    /* Min font size ensures clarity, max prevents extreme overlap */
+    font-size: clamp(1rem, 5vw, 2.5rem); 
+    font-weight: 700;
+    white-space: nowrap;
+    user-select: none;
+    
+    /* Animation properties for the scrolling train effect */
+    animation-name: scroll-left;
+    animation-timing-function: linear; /* Consistent speed */
+    animation-iteration-count: infinite; /* Never stops */
+    
+    /* Ensures elements start at the right edge */
+    left: 100%; 
+}
+
+/* Keyframes for continuous right-to-left scrolling */
+@keyframes scroll-left {
+    0% {
+        /* Start off-screen right */
+        transform: translateX(0); 
+    }
+    100% {
+        /* Moves entire width of the viewport and a little extra to ensure no gap */
+        transform: translateX(-200vw); 
+    }
+}
+
+/* Keyframes for the pulsing button effect */
+@keyframes pulse-light {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    }
+    50% { 
+        /* Slight growth and a gentle outer shadow glow */
+        transform: scale(1.03); 
+        box-shadow: 0 0 10px 5px rgba(252, 165, 165, 0.4); 
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+    }
+}
+
+/* --- Main Landing Content Styles --- */
+.landing-body {
+    /* Minimalistic, child-friendly gradient: Soft Powder Blue */
+    background: linear-gradient(135deg, #e0f2f7 0%, #c4e4f0 100%); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+}
+
+.landing-container {
+    /* Enhanced Frosted glass effect */
+    background-color: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(12px); /* Increased blur */
+    border-radius: 1.5rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+    max-width: 600px;
+    width: 100%;
+    animation: fadeIn 1s ease-out forwards;
+    z-index: 10;
+    position: relative;
+}
+
+.landing-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
+    color: #1f2937;
+}
+
+.landing-subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 2.5rem;
+    opacity: 0.8;
+    color: #374151;
+}
+
+.challenge-button {
+    /* Child-friendly Soft Coral Button */
+    display: inline-block;
+    background-color: #fca5a5; 
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 1.125rem;
+    padding: 1rem 2.5rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* Apply the pulsing animation */
+    animation: pulse-light 2s infinite ease-in-out; 
+}
+
+.challenge-button:hover {
+    background-color: #f87171; 
+    transform: translateY(-3px) scale(1.03); /* Ensure hover works with pulse */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    animation: none; /* Pause pulse on hover for responsiveness */
+}
+
+.challenge-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .landing-title {
+        font-size: 2.25rem;
+    }
+    .landing-subtitle {
+        font-size: 1rem;
+    }
+    .landing-container {
+        padding: 2rem 1rem;
+    }
+    .challenge-button {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+}

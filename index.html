@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Coach</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="./style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .difficulty-radio input:checked + span {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            border-color: #2563eb;
+        }
+        .difficulty-radio span {
+            transition: all 0.2s;
+            border: 1px solid #d1d5db;
+        }
+        .topic-btn-default {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .topic-btn-active {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+        .solution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .progress-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        /* Styles for the Refiner Panel */
+        .refiner-input {
+            min-height: 150px;
+            font-family: monospace;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            resize: vertical;
+            background-color: #f9fafb;
+            color: #1f2937;
+            width: 100%;
+        }
+        .refiner-output-text {
+            white-space: pre-wrap;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            color: #374151; /* Darker text for readability */
+            background-color: #f9fafb; /* Light gray background */
+            border: 1px solid #e5e7eb; /* Light border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            max-height: 200px;  /* Added max-height for scrollable output */
+            overflow-y: auto; /* Added overflow for scrollable output */
+        }
+        
+        /* NEW CLASS for panels that should NOT scroll */
+        .info-panel {
+            margin-top: 2rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border-width: 1px;
+            border-color: #e5e7eb;
+            color: #4b5563;
+            line-height: 1.625;
+        }
+    </style>
+</head>
+<body class="bg-body flex-container min-h-screen p-4">
+
+    <div class="card w-full max-w-2xl">
+        <h1 class="card-title text-center mb-2">DSA Coach</h1>
+        <p class="card-subtitle text-center mb-8">Select a data structure to get a programming problem.</p>
+        
+        <a href="quiz.html" class="block w-full text-center">
+            <button class="w-full bg-blue-200 text-gray-800 font-bold py-3 px-6 rounded-full shadow-lg transition-colors duration-300 hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 mb-6">
+                Test Your Knowledge
+            </button>
+        </a>
+        
+        <a href="https://www.programiz.com/java-programming/online-compiler/" target="_blank" class="block w-full text-center">
+            <button class="w-full bg-purple-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-colors duration-300 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 mb-6">
+                Open Online Sandbox
+            </button>
+        </a>
+
+        <div class="button-group-container">
+            <button class="topic-btn topic-btn-default" data-topic="Arrays">Arrays</button>
+            <button class="topic-btn topic-btn-default" data-topic="Strings">Strings</button>
+            <button class="topic-btn topic-btn-default" data-topic="Linked Lists">Linked Lists</button>
+            <button class="topic-btn topic-btn-default" data-topic="Hash Maps">Hash Maps</button>
+            <button class="topic-btn topic-btn-default" data-topic="Trees">Trees</button>
+            <button class="topic-btn topic-btn-default" data-topic="Graphs">Graphs</button>
+        </div>
+        
+        <div class="mt-6 mb-8">
+            <h2 class="text-xl font-semibold mb-2 text-gray-700 text-center">Select Difficulty</h2>
+            <div class="flex justify-center gap-4">
+                <label class="difficulty-radio cursor-pointer">
+                    <input type="radio" name="difficulty" value="Beginner" class="hidden peer" checked>
+                    <span class="inline-block py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Beginner</span>
+                </label>
+                <label class="difficulty-radio cursor-pointer">
+                    <input type="radio" name="difficulty" value="Intermediate" class="hidden peer">
+                    <span class="inline-block py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Intermediate</span>
+                </label>
+                <label class="difficulty-radio cursor-pointer">
+                    <input type="radio" name="difficulty" value="Advanced" class="hidden peer">
+                    <span class="inline-block py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300">Advanced</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="selected-topic-display" class="topic-display">Please select a topic above.</div>
+
+        <button id="suggest-btn" class="suggest-btn">Suggest Problem</button>
+        
+        <div class="action-buttons-container">
+            <button id="get-solution-btn" class="action-btn bg-green-500 hover:bg-green-600 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>✨ Get a Solution</button>
+            <button id="get-hint-btn" class="action-btn bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>✨ Get a Hint</button>
+        </div>
+        <div class="action-buttons-container">
+            <button id="explain-solution-btn" class="action-btn bg-purple-500 hover:bg-purple-600 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>✨ Explain the Solution</button>
+            <button id="translate-solution-btn" class="action-btn bg-orange-500 hover:bg-orange-600 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed" disabled>✨ Translate to Python</button>
+        </div>
+
+        <div id="loading-indicator" class="loading-indicator-container hidden">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Generating content...</p>
+        </div>
+
+        <div id="problem-output" class="output-panel">
+            <p id="problem-text">Your suggested problem will appear here.</p>
+            <button id="mark-as-solved-btn" class="progress-btn mt-4 bg-indigo-500 text-white hover:bg-indigo-600 transition-colors hidden">Mark as Solved</button>
+        </div>
+        
+        <div id="solution-output" class="output-panel hidden">
+            <div class="solution-header">
+                <h2 class="output-title">Solution</h2>
+                <button id="copy-solution-btn" class="text-xs bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-3 rounded-full">Copy</button>
+            </div>
+            <pre id="solution-code" class="code-block"></pre>
+        </div>
+        
+        <div id="explanation-output" class="output-panel hidden">
+            <h2 class="output-title">Explanation</h2>
+            <p id="explanation-text"></p>
+        </div>
+        
+        <div id="hint-output" class="output-panel hidden">
+            <h2 class="output-title">Hint</h2>
+            <p id="hint-text"></p>
+        </div>
+        
+        <div id="translated-code-output" class="output-panel hidden">
+            <h2 class="output-title">Python Solution</h2>
+            <pre id="translated-code" class="code-block"></pre>
+        </div>
+
+        <!-- AGENTIC FEATURE: CODE REFINER (Class changed to info-panel) -->
+        <div class="info-panel mt-6">
+            <div class="solution-header mb-4">
+                <h2 class="output-title">Code Refiner (Agentic Feature)</h2>
+                <select id="refiner-language-select" class="text-sm p-1 border border-gray-300 rounded-lg">
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="C++">C++</option>
+                </select>
+            </div>
+            <p class="text-xs mb-2 text-gray-500">Paste your code below. The Refiner will analyze it for complexity and suggest optimized code.</p>
+            <textarea id="user-code-input" class="refiner-input" placeholder="Paste your code here..."></textarea>
+            
+            <button id="refine-code-btn" class="progress-btn mt-3 bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 w-full" disabled>
+                Analyze & Refine Code
+            </button>
+            
+            <div id="refiner-output-panel" class="mt-4 hidden">
+                <h3 class="font-semibold mb-2 output-title text-base">Critique & Complexity:</h3>
+                <pre id="refiner-critique" class="refiner-output-text mb-4"></pre>
+                
+                <h3 class="font-semibold mb-2 output-title text-base">Optimized Solution:</h3>
+                <pre id="refiner-optimized-code" class="refiner-output-text mb-4"></pre>
+
+                <h3 class="font-semibold mb-2 output-title text-base">Improvement Rationale:</h3>
+                <pre id="refiner-rationale" class="refiner-output-text"></pre>
+            </div>
+        </div>
+
+        <!-- PROGRESS TRACKER DASHBOARD (Class changed to info-panel) -->
+        <div class="info-panel mt-6">
+            <div class="solution-header">
+                <h2 class="output-title">Progress Tracker</h2>
+                <button id="clear-progress-btn" class="text-xs bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-full">Clear Progress</button>
+            </div>
+            <p class="mb-2">Total Problems Solved: <span id="solved-count" class="font-bold">0</span></p>
+            <p>Beginner: <span id="solved-beginner" class="font-bold">0</span> | Intermediate: <span id="solved-intermediate" class="font-bold">0</span> | Advanced: <span id="solved-advanced" class="font-bold">0</span></p>
+            <p>Current Streak: <span id="current-streak" class="font-bold">0</span> day(s)</p>
+            <h3 class="font-semibold mt-4 mb-2">Solved Problems History</h3>
+            <ul id="history-list" class="list-disc list-inside text-sm">
+                <li class="text-gray-500">No problems solved yet.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="./config.js" defer></script>
+    <script src="./script.js" defer></script>
+</body>
+</html>
+

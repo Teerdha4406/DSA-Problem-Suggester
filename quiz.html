@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Softer, light blue-gray background */
+        }
+        .main-container {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1); /* Deeper shadow for a floating effect */
+            padding: 2.5rem;
+            max-width: 38rem; /* A bit wider for better layout */
+        }
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c; /* Darker title color */
+            margin-bottom: 0.5rem;
+        }
+        .main-subtitle {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #4338ca; /* Indigo-700 */
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Pill shape */
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #3730a3; /* Indigo-800 */
+        }
+        .btn-secondary {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #2d3748; /* Gray-800 */
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.2s;
+        }
+        .btn-secondary.active {
+            background-color: #4338ca;
+            color: white;
+        }
+        .btn-secondary:hover:not(.active) {
+            background-color: #cbd5e1; /* Gray-300 */
+        }
+        .quiz-card {
+            background-color: #f7fafc; /* Lighter background for the card */
+            border-radius: 0.75rem;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+        .quiz-question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .option-button {
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+            text-align: left;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .option-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .option-button.selected {
+            border-color: #6366f1; /* Indigo-500 */
+            background-color: #eef2ff; /* Indigo-50 */
+        }
+        .correct {
+            background-color: #10b981 !important; /* Emerald-500 */
+            color: white !important;
+            font-weight: 700;
+            border-color: #059669 !important; /* Emerald-600 */
+        }
+        .incorrect {
+            background-color: #ef4444 !important; /* Red-500 */
+            color: white !important;
+            font-weight: 700;
+            border-color: #dc2626 !important; /* Red-600 */
+        }
+        .quiz-feedback {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        .quiz-feedback.correct-feedback {
+            background-color: #d1fae5; /* Green-100 */
+            color: #065f46; /* Green-700 */
+        }
+        .quiz-feedback.incorrect-feedback {
+            background-color: #fee2e2; /* Red-100 */
+            color: #991b1b; /* Red-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="main-container flex flex-col items-center">
+        
+        <h1 class="main-title text-center">DSA Quiz</h1>
+        <p class="main-subtitle text-center">Select a topic below and start the quiz.</p>
+        
+        <a href="index.html" class="block w-full text-center mb-6">
+            <button class="w-full bg-pink-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-colors duration-300 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2">
+                Back to Problem Suggester
+            </button>
+        </a>
+        
+        <div class="w-full mb-8">
+            <h2 class="text-xl font-semibold mb-3 text-gray-700 text-center">Choose a Topic</h2>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Arrays">Arrays</button>
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Strings">Strings</button>
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Linked Lists">Linked Lists</button>
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Hash Maps">Hash Maps</button>
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Trees">Trees</button>
+                <button class="topic-btn btn-secondary font-semibold py-2 px-4 rounded-full transition-colors duration-300" data-topic="Graphs">Graphs</button>
+            </div>
+        </div>
+
+        <div id="quiz-question-area" class="w-full">
+            <div class="mb-4">
+                <h2 class="text-xl font-semibold mb-3 text-gray-700 text-center">Topic: <span id="quiz-topic-display" class="font-bold text-indigo-700">--</span></h2>
+            </div>
+            
+            <button id="generate-quiz-btn" class="w-full btn-primary py-3 px-6 rounded-full shadow-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed mb-6" disabled>
+                Generate New Quiz Question
+            </button>
+
+            <div id="quiz-loading" class="mt-8 text-center hidden">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+                <p class="text-gray-500 mt-2">Generating question...</p>
+            </div>
+            
+            <div id="quiz-display" class="quiz-card hidden">
+                <p class="quiz-question" id="current-question-text">Question text will appear here.</p>
+                
+                <div id="quiz-options" class="flex flex-col space-y-3">
+                    </div>
+                
+                <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                
+                <div class="flex justify-center mt-6 gap-4">
+                    <button id="submit-answer-btn" class="btn-primary py-2 px-6 shadow-md transition-colors duration-300 disabled:opacity-50" disabled>Submit Answer</button>
+                    <button id="next-question-btn" class="bg-gray-400 text-white font-bold py-2 px-6 rounded-full shadow-md hover:bg-gray-500 transition-colors duration-300 disabled:opacity-50" disabled>Next Question</button>
+                </div>
+            </div>
+            <p id="quiz-placeholder" class="text-center text-gray-500 mt-6 hidden">Click "Generate New Quiz Question" to begin!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // *** 🚨 IMPORTANT: PASTE YOUR API KEY HERE 🚨 ***
+            const API_KEY = "AIzaSyD1a8rWfgfyUEb9xGJMvmPho4zrhQelXVc"; 
+            const API_BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+            
+            const topicButtons = document.querySelectorAll('.topic-btn');
+            const quizTopicDisplay = document.getElementById('quiz-topic-display');
+            
+            const generateQuizBtn = document.getElementById('generate-quiz-btn');
+            const quizLoading = document.getElementById('quiz-loading');
+            const quizDisplay = document.getElementById('quiz-display');
+            const currentQuestionText = document.getElementById('current-question-text');
+            const quizOptionsContainer = document.getElementById('quiz-options');
+            const quizFeedback = document.getElementById('quiz-feedback');
+            const submitAnswerBtn = document.getElementById('submit-answer-btn');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const quizPlaceholder = document.getElementById('quiz-placeholder');
+            
+            let selectedTopic = null;
+            let currentQuiz = { question: '', options: [], answer: '', userSelection: null };
+
+            async function callApi(prompt, loaderElement) {
+                loaderElement.classList.remove('hidden');
+                
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    tools: [{ "google_search": {} }],
+                    systemInstruction: {
+                        parts: [{ text: "You are a versatile AI assistant specialized in programming and data structures." }]
+                    },
+                };
+                
+                try {
+                    const response = await fetch(API_BASE_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+                    
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        return candidate.content.parts[0].text;
+                    } else {
+                        throw new Error('No content found in the API response.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching content:', error);
+                    return `Error: ${error.message}`;
+                } finally {
+                    loaderElement.classList.add('hidden');
+                }
+            }
+            
+            function parseQuizResponse(text) {
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                if (lines.length < 5) {
+                    throw new Error("Response has too few lines to be a valid quiz question.");
+                }
+
+                const question = lines[0].trim();
+                const options = lines.slice(1, 5).map(line => line.trim());
+                const answerLine = lines[lines.length - 1];
+
+                const answerMatch = answerLine.match(/Correct Answer:\s*([A-D])/i);
+                if (!answerMatch) {
+                    throw new Error("Could not find the correct answer in the response.");
+                }
+
+                const answer = answerMatch[1].toUpperCase();
+
+                return { question, options, answer };
+            }
+
+            function renderQuiz() {
+                currentQuestionText.textContent = currentQuiz.question;
+                quizOptionsContainer.innerHTML = '';
+                
+                currentQuiz.options.forEach((option, index) => {
+                    const letter = String.fromCharCode(65 + index);
+                    const button = document.createElement('button');
+                    button.className = 'option-button w-full py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50';
+                    button.textContent = option;
+                    button.dataset.key = letter;
+                    button.addEventListener('click', () => selectOption(button, letter));
+                    quizOptionsContainer.appendChild(button);
+                });
+                
+                quizDisplay.classList.remove('hidden');
+                quizPlaceholder.classList.add('hidden');
+                submitAnswerBtn.disabled = true;
+                nextQuestionBtn.disabled = true;
+                quizFeedback.classList.add('hidden');
+            }
+            
+            function selectOption(button, selection) {
+                if (currentQuiz.userSelection !== null) return;
+                
+                document.querySelectorAll('.option-button').forEach(btn => btn.classList.remove('selected'));
+                
+                button.classList.add('selected');
+                currentQuiz.userSelection = selection;
+                submitAnswerBtn.disabled = false;
+            }
+            
+            topicButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    topicButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    selectedTopic = button.dataset.topic;
+                    quizTopicDisplay.textContent = selectedTopic;
+                    generateQuizBtn.disabled = false;
+                    quizDisplay.classList.add('hidden');
+                    quizPlaceholder.classList.remove('hidden');
+                    quizPlaceholder.textContent = 'Click "Generate New Quiz Question" to begin!';
+                });
+            });
+
+            generateQuizBtn.addEventListener('click', async () => {
+                if (!selectedTopic) {
+                    alert("Please select a topic first.");
+                    return;
+                }
+                
+                const prompt = `Create a multiple-choice quiz question about the topic of ${selectedTopic}. Provide a clear question with exactly 4 options labeled A, B, C, D, each on a new line. The options should follow the question. The correct answer must be on the very last line of the response in the format "Correct Answer: [Letter]".`;
+                
+                quizDisplay.classList.add('hidden');
+                quizPlaceholder.classList.add('hidden');
+                
+                const responseText = await callApi(prompt, quizLoading);
+
+                if (responseText.startsWith('Error')) {
+                    alert(`Failed to generate quiz: ${responseText}`);
+                    quizPlaceholder.textContent = "Error generating question. Please try again.";
+                    quizPlaceholder.classList.remove('hidden');
+                } else {
+                    try {
+                        const quizData = parseQuizResponse(responseText);
+                        currentQuiz = { ...quizData, userSelection: null };
+                        renderQuiz();
+                    } catch (e) {
+                        console.error(e);
+                        quizPlaceholder.textContent = `Error parsing response: ${e.message}. Generating a new question might fix it.`;
+                        quizPlaceholder.classList.remove('hidden');
+                    }
+                }
+            });
+
+            submitAnswerBtn.addEventListener('click', () => {
+                if (currentQuiz.userSelection === null || currentQuiz.userSelection === undefined) return;
+
+                const buttons = document.querySelectorAll('.option-button');
+                buttons.forEach(button => {
+                    button.disabled = true;
+                    if (button.dataset.key === currentQuiz.answer) {
+                        button.classList.add('correct');
+                    } else if (button.dataset.key === currentQuiz.userSelection) {
+                        button.classList.add('incorrect');
+                    }
+                    button.classList.remove('selected');
+                });
+
+                if (currentQuiz.userSelection === currentQuiz.answer) {
+                    quizFeedback.className = 'quiz-feedback correct-feedback';
+                    quizFeedback.textContent = 'Correct! Great job.';
+                } else {
+                    quizFeedback.className = 'quiz-feedback incorrect-feedback';
+                    quizFeedback.textContent = `Incorrect. The correct answer was ${currentQuiz.answer}.`;
+                }
+                
+                quizFeedback.classList.remove('hidden');
+                submitAnswerBtn.disabled = true;
+                nextQuestionBtn.disabled = false;
+            });
+            
+            nextQuestionBtn.addEventListener('click', () => {
+                generateQuizBtn.click();
+            });
+        });
+    </script>
+
+    <script src="./config.js" defer></script>
+    <script src="./script.js" defer></script>
+
+</body>
+</html>
