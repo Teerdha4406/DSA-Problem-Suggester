@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // API Configuration
     const API_MODEL = 'gemini-2.5-flash-preview-05-20';
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${API_MODEL}:generateContent`;
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    const API_KEY = "AIzaSyD1a8rWfgfyUEb9xGJMvmPho4zrhQelXVc";
     // Your API Key
 
     /**
@@ -519,5 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProgress();
     disableButtons();
 });
+
 
 
