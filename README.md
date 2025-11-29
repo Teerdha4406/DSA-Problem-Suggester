@@ -10,7 +10,7 @@ This is a front-end-only project. To run it, you must provide your own Gemini AP
     Download this project as a ZIP or clone the repository.
 
 2.  **Add Your API Key:**
-    Paste your Gemini API key into `scipt.js` in the following format:
+    Paste your Gemini API key into `script.js` and `quiz.html` in the following format:
     ```javascript
     const API_KEY = "YOUR_API_KEY_GOES_HERE";
     ```
